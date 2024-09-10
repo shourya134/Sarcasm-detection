@@ -27,18 +27,21 @@ def clean_text(text):
     return " ".join(tokens)
 
 
-def load_data():
+def load_data(max_features=10_000):
     """
     Load train/test CSVs, clean headlines, and return TF-IDF feature matrices.
 
     Fits the TF-IDF vectorizer on training data only to prevent data leakage.
-    Uses unigrams and bigrams with a vocabulary capped at 10,000 features.
+    Uses unigrams and bigrams with a vocabulary capped at max_features.
+
+    Args:
+        max_features (int): Maximum number of TF-IDF features to keep. Default 10,000.
 
     Returns:
         X_train, X_test (scipy sparse matrices), y_train, y_test (pd.Series)
 
     Example:
-        >>> X_train, X_test, y_train, y_test = load_data()
+        >>> X_train, X_test, y_train, y_test = load_data(max_features=10_000)
         >>> X_train.shape
         (28619, 10000)
     """
@@ -50,7 +53,7 @@ def load_data():
     test_df["headline"] = test_df["headline"].map(clean_text)
 
     # Fit on train only — transforming test with train vocabulary prevents data leakage
-    vectorizer = TfidfVectorizer(ngram_range=(1, 2), max_features=10_000)
+    vectorizer = TfidfVectorizer(ngram_range=(1, 2), max_features=max_features)
     X_train = vectorizer.fit_transform(train_df["headline"])
     X_test = vectorizer.transform(test_df["headline"])
 

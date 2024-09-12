@@ -5,6 +5,7 @@ from sklearn.metrics import f1_score
 from data_processing import load_data
 
 MODEL_PATH = "model.joblib"
+VECTORIZER_PATH = "vectorizer.joblib"
 
 
 def train(max_features=10_000, C=1.0):
@@ -27,8 +28,9 @@ def train(max_features=10_000, C=1.0):
         Training with max_features=10000, C=1.0
         Test F1: 0.8741
         Model saved to model.joblib
+        Vectorizer saved to vectorizer.joblib
     """
-    X_train, X_test, y_train, y_test = load_data(max_features=max_features)
+    X_train, X_test, y_train, y_test, vectorizer = load_data(max_features=max_features)
 
     model = LogisticRegression(
         solver="saga",      # stochastic solver — scales well to large sparse TF-IDF matrices
@@ -46,6 +48,10 @@ def train(max_features=10_000, C=1.0):
 
     joblib.dump(model, MODEL_PATH)
     print(f"Model saved to {MODEL_PATH}")
+
+    # Saved alongside the model — needed to transform any new raw text the same way at inference time
+    joblib.dump(vectorizer, VECTORIZER_PATH)
+    print(f"Vectorizer saved to {VECTORIZER_PATH}")
 
     return model
 

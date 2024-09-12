@@ -38,10 +38,11 @@ def load_data(max_features=10_000):
         max_features (int): Maximum number of TF-IDF features to keep. Default 10,000.
 
     Returns:
-        X_train, X_test (scipy sparse matrices), y_train, y_test (pd.Series)
+        X_train, X_test (scipy sparse matrices), y_train, y_test (pd.Series),
+        vectorizer (fitted TfidfVectorizer — needed to transform new raw text later)
 
     Example:
-        >>> X_train, X_test, y_train, y_test = load_data(max_features=10_000)
+        >>> X_train, X_test, y_train, y_test, vectorizer = load_data(max_features=10_000)
         >>> X_train.shape
         (28619, 10000)
     """
@@ -60,11 +61,11 @@ def load_data(max_features=10_000):
     y_train = train_df["is_sarcastic"]
     y_test = test_df["is_sarcastic"]
 
-    return X_train, X_test, y_train, y_test
+    return X_train, X_test, y_train, y_test, vectorizer
 
 
 # Sanity check — run directly to verify shapes and class balance before training
 if __name__ == "__main__":
-    X_train, X_test, y_train, y_test = load_data()
+    X_train, X_test, y_train, y_test, vectorizer = load_data()
     print(f"Train: {X_train.shape}, Test: {X_test.shape}")
     print(f"Label distribution (train):\n{y_train.value_counts()}")

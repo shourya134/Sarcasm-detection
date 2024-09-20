@@ -1,11 +1,13 @@
+import os
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score
 
-from data_processing import load_data
+from .data_processing import load_data
 
 MAX_FEATURES_GRID = [2_000, 5_000, 10_000, 15_000, 20_000, 30_000]
-PLOT_PATH = "f1_vs_max_features.png"
+TUNING_RESULTS_DIR = "tuning_results"
+PLOT_PATH = os.path.join(TUNING_RESULTS_DIR, "f1_vs_max_features.png")
 
 
 def tune():
@@ -25,8 +27,10 @@ def tune():
         max_features=20000   F1=0.8758
         max_features=30000   F1=0.8744
         Best max_features: 15000 (F1=0.8765)
-        Plot saved to f1_vs_max_features.png
+        Plot saved to tuning_results/f1_vs_max_features.png
     """
+    os.makedirs(TUNING_RESULTS_DIR, exist_ok=True)
+
     results = []
 
     for max_features in MAX_FEATURES_GRID:

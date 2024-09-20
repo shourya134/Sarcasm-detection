@@ -1,13 +1,16 @@
+import os
 import joblib
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, ConfusionMatrixDisplay
 
-from data_processing import clean_text, DATA_DIR
+from .data_processing import clean_text, DATA_DIR
 
-MODEL_PATH = "model.joblib"
-VECTORIZER_PATH = "vectorizer.joblib"
-CONFUSION_MATRIX_PATH = "confusion_matrix.png"
+ARTIFACTS_DIR = "artifacts"
+MODEL_PATH = os.path.join(ARTIFACTS_DIR, "model.joblib")
+VECTORIZER_PATH = os.path.join(ARTIFACTS_DIR, "vectorizer.joblib")
+EVAL_RESULTS_DIR = "eval_results"
+CONFUSION_MATRIX_PATH = os.path.join(EVAL_RESULTS_DIR, "confusion_matrix.png")
 
 
 def evaluate():
@@ -22,8 +25,10 @@ def evaluate():
                       precision    recall  f1-score   support
                    0       0.87      0.89      0.88     14985
                    1       0.87      0.85      0.86     11724
-        Confusion matrix saved to confusion_matrix.png
+        Confusion matrix saved to eval_results/confusion_matrix.png
     """
+    os.makedirs(EVAL_RESULTS_DIR, exist_ok=True)
+
     model = joblib.load(MODEL_PATH)
     # Load the vectorizer fit during training — guarantees the exact same vocabulary,
     # rather than risking a mismatch from re-fitting a new one here

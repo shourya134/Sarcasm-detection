@@ -1,11 +1,13 @@
+import os
 import joblib
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from data_processing import clean_text
+from .data_processing import clean_text
 
-MODEL_PATH = "model.joblib"
-VECTORIZER_PATH = "vectorizer.joblib"
+ARTIFACTS_DIR = "artifacts"
+MODEL_PATH = os.path.join(ARTIFACTS_DIR, "model.joblib")
+VECTORIZER_PATH = os.path.join(ARTIFACTS_DIR, "vectorizer.joblib")
 
 app = FastAPI(title="Sarcasm Detection API")
 

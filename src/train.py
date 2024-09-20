@@ -1,11 +1,13 @@
+import os
 import joblib
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score
 
-from data_processing import load_data
+from .data_processing import load_data
 
-MODEL_PATH = "model.joblib"
-VECTORIZER_PATH = "vectorizer.joblib"
+ARTIFACTS_DIR = "artifacts"
+MODEL_PATH = os.path.join(ARTIFACTS_DIR, "model.joblib")
+VECTORIZER_PATH = os.path.join(ARTIFACTS_DIR, "vectorizer.joblib")
 
 
 def train(max_features=10_000, C=1.0):
@@ -27,9 +29,11 @@ def train(max_features=10_000, C=1.0):
         $ python train.py
         Training with max_features=10000, C=1.0
         Test F1: 0.8741
-        Model saved to model.joblib
-        Vectorizer saved to vectorizer.joblib
+        Model saved to artifacts/model.joblib
+        Vectorizer saved to artifacts/vectorizer.joblib
     """
+    os.makedirs(ARTIFACTS_DIR, exist_ok=True)
+
     X_train, X_test, y_train, y_test, vectorizer = load_data(max_features=max_features)
 
     model = LogisticRegression(

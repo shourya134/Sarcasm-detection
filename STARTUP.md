@@ -84,10 +84,14 @@ python -m src.api
 Interactive docs: open `http://127.0.0.1:8000/docs` in a browser and try `POST /predict`
 directly.
 
-Or via curl:
+Or via curl (use `curl.exe` on Windows — PowerShell's `curl` alias is `Invoke-WebRequest` and uses different flags):
 
 ```bash
+# Linux / macOS
 curl -X POST http://127.0.0.1:8000/predict -H "Content-Type: application/json" -d "{\"headline\": \"Local Man Discovers Sarcasm, Nation Stunned\"}"
+
+# Windows (PowerShell)
+curl.exe -X POST http://127.0.0.1:8000/predict -H "Content-Type: application/json" -d "{\"headline\": \"Local Man Discovers Sarcasm, Nation Stunned\"}"
 ```
 
 ## 7. `src/test_cases.py`
